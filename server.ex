@@ -1,16 +1,13 @@
-defmodule MyApp do
-  use Plug.Router
+defmodule ServerPlug do
+  use Plug.Builder
 
   plug :match
   plug :dispatch
 
   get "/" do
-    send_resp(conn, 200, "simple server in elixir")
-  end
-
-  match _ do
-    send_resp(conn, 404, "Not found")
+    send_resp(conn, 200, "Simple server in Elixir")
   end
 end
 
-Plug.Adapters.Cowboy2.http MyApp, []
+{:ok, _} = Plug.Cowboy.http(ServerPlug, [])
+IO.puts "Server running at http://localhost:8080/"
